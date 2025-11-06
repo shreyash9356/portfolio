@@ -1,0 +1,41 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Output directories (if you don't want to track generated files)
+# Uncomment if needed:
+# output/
+
+# Environment variables
+.env
+.env.local
+
+# Node modules (if you add any in future)
+node_modules/
+
+# Python (if you add any Python projects)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Build files
+dist/
+build/

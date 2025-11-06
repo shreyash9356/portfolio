@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         menuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             menuBtn.classList.toggle('active');
+
             
             // Prevent body scroll when menu is open
             if (navLinks.classList.contains('active')) {
@@ -188,5 +189,40 @@ if (contactForm) {
         });
         
         observer.observe(skillsSection);
+    }
+
+    // Resume download button handler
+    const resumeDownloadBtn = document.getElementById('resume-download-btn');
+    if (resumeDownloadBtn) {
+        resumeDownloadBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            const pdfPath = 'CV_Shreyash_Lambat.pdf';
+            
+            // Try to fetch the file first to check if it exists
+            fetch(pdfPath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('File not found');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Create a download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'CV_Shreyash_Lambat.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Download error:', error);
+                    alert('Resume file not found. Please make sure CV_Shreyash_Lambat.pdf is in the project folder.');
+                    // Fallback: try direct download
+                    window.open(pdfPath, '_blank');
+                });
+        });
     }
 }); 
