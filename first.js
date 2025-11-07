@@ -3,12 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get the theme toggle button
     const themeToggle = document.getElementById('theme-toggle');
     
+    if (!themeToggle) return; // Safety check
+    
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
-        themeToggle.textContent = '☀️'; 
-        
+        themeToggle.textContent = '☀️'; // Sun emoji for dark mode
+    } else {
+        // Ensure light mode is set (default)
+        document.body.classList.remove('dark-theme');
+        themeToggle.textContent = '🌙'; // Moon emoji for light mode
     }
 
     // Theme toggle click handler
@@ -16,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Toggle dark theme class on body
         document.body.classList.toggle('dark-theme');
         
-        // Update button text
+        // Update button text and save preference
         if (document.body.classList.contains('dark-theme')) {
             themeToggle.textContent = '☀️'; // Sun emoji for dark mode
             localStorage.setItem('theme', 'dark');
