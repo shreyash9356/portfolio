@@ -1,37 +1,51 @@
-// Dark theme functionality
+// Segmented Theme Toggle (Light / Dark / Auto)
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the theme toggle button
-    const themeToggle = document.getElementById('theme-toggle');
-    
-    if (!themeToggle) return; // Safety check
-    
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeToggle.textContent = '☀️'; // Sun emoji for dark mode
-    } else {
-        // Ensure light mode is set (default)
-        document.body.classList.remove('dark-theme');
-        themeToggle.textContent = '🌙'; // Moon emoji for light mode
+    const themeButtons = document.querySelectorAll(
+      '.theme-toggle-group .theme-option'
+    );
+    const html = document.documentElement;
+  
+    if (!themeButtons.length) return;
+  
+    function applyTheme(theme) {
+      if (theme === 'auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        html.setAttribute('data-theme', theme);
+      }
+  
+      // Save preference
+      localStorage.setItem('theme', theme);
+  
+      // Update active state
+      themeButtons.forEach(btn => btn.classList.remove('active'));
+      document
+        .querySelector(`.theme-option[data-theme="${theme}"]`)
+        ?.classList.add('active');
     }
-
-    // Theme toggle click handler
-    themeToggle.addEventListener('click', () => {
-        // Toggle dark theme class on body
-        document.body.classList.toggle('dark-theme');
-        
-        // Update button text and save preference
-        if (document.body.classList.contains('dark-theme')) {
-            themeToggle.textContent = '☀️'; // Sun emoji for dark mode
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeToggle.textContent = '🌙'; // Moon emoji for light mode
-            localStorage.setItem('theme', 'light');
-        }
+  
+    // Load saved theme (default: auto)
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+  
+    // Button click handling
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyTheme(btn.dataset.theme);
+      });
     });
-}); 
-
+  
+    // Auto mode → follow system changes live
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => {
+        if (localStorage.getItem('theme') === 'auto') {
+          applyTheme('auto');
+        }
+      });
+  });
+  
 
 
 document.addEventListener('DOMContentLoaded', () => {
